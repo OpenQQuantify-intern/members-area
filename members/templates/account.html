@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% from 'auth/_fields.html' import field_row %}
+{% block title %}Account settings · MembersArea{% endblock %}
+{% block content %}
+<section class="settings-header" aria-labelledby="settings-title">
+  <p class="eyebrow">A space of your own</p>
+  <h1 id="settings-title">Account settings.</h1>
+  <p class="intro">Manage your sign-in details and your account.</p>
+  <p class="signed-in-as">Signed in as <strong>{{ g.user['email'] }}</strong></p>
+</section>
+<div class="settings-layout">
+  <nav class="settings-nav" aria-label="Account settings sections">
+    <a href="#change-email">Email address</a>
+    <a href="#change-password">Password</a>
+    <a href="#delete-account">Delete account</a>
+  </nav>
+  <div class="settings-panels">
+    <section class="form-card settings-panel" id="change-email" aria-labelledby="email-title">
+      <h2 id="email-title">Change your email</h2>
+      <p class="panel-description">You’ll use your new email address to log in. Updating it signs you out on all devices.</p>
+      <form method="post" action="{{ url_for('accounts.change_email') }}">
+        {{ email_form.csrf_token(id='email-csrf-token') }}
+        {{ field_row(email_form.new_email, 'email') }}
+        {{ field_row(email_form.current_password, 'current-password') }}
+        {{ email_form.submit(class_='button', id='email-submit') }}
+      </form>
+    </section>
+
+    <section class="form-card settings-panel" id="change-password" aria-labelledby="password-title">
+      <h2 id="password-title">Change your password</h2>
+      <p class="panel-description">Choose a new passphrase you haven’t used before. Updating it signs you out on all devices.</p>
+      <form method="post" action="{{ url_for('accounts.change_password') }}">
+        {{ password_form.csrf_token(id='password-csrf-token') }}
+        {{ field_row(password_form.current_password, 'current-password') }}
+        {{ field_row(password_form.new_password, 'new-password', 'Use 15–128 characters. Try a memorable passphrase.') }}
+        {{ field_row(password_form.confirm_password, 'new-password') }}
+        {{ password_form.submit(class_='button', id='password-submit') }}
+      </form>
+    </section>
+
+    <section class="form-card settings-panel danger-panel" id="delete-account" aria-labelledby="delete-title">
+      <h2 id="delete-title">Delete your account</h2>
+      <p class="panel-description">This permanently removes your account, signed-in sessions, and password-reset links. You will lose access to the members area. This cannot be undone.</p>
+      <form method="post" action="{{ url_for('accounts.delete_account') }}">
+        {{ delete_form.csrf_token(id='delete-csrf-token') }}
+        {{ field_row(delete_form.current_password, 'current-password') }}
+        <div class="confirmation-row">
+          {{ delete_form.confirm_delete(class_='confirm-checkbox', aria_describedby='delete-confirmation-errors') }}
+          {{ delete_form.confirm_delete.label }}
+        </div>
+        <div id="delete-confirmation-errors">
+          {% for message in delete_form.confirm_delete.errors %}<p class="field-error">{{ message }}</p>{% endfor %}
+        </div>
+        {{ delete_form.submit(class_='button button-danger', id='delete-submit') }}
+      </form>
+    </section>
+  </div>
+</div>
+{% endblock %}

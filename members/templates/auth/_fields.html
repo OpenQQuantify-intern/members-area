@@ -1,0 +1,17 @@
+{% macro field_row(field, autocomplete, hint='') %}
+  <div class="field">
+    {{ field.label }}
+    <div class="input-wrap">
+      {% if field.type == 'PasswordField' %}
+        {{ field(class_='input input-password', autocomplete=autocomplete, maxlength=128, aria_describedby=field.id ~ '-hint ' ~ field.id ~ '-errors', aria_invalid='true' if field.errors else 'false') }}
+        <button type="button" class="password-toggle" data-toggle-password="{{ field.id }}" aria-label="Show {{ field.label.text | lower }}" aria-pressed="false">Show</button>
+      {% else %}
+        {{ field(class_='input', autocomplete=autocomplete, maxlength=254, autocapitalize='none', spellcheck='false', aria_describedby=field.id ~ '-hint ' ~ field.id ~ '-errors', aria_invalid='true' if field.errors else 'false') }}
+      {% endif %}
+    </div>
+    <p class="field-hint" id="{{ field.id }}-hint">{{ hint }}</p>
+    <div id="{{ field.id }}-errors">
+      {% for message in field.errors %}<p class="field-error">{{ message }}</p>{% endfor %}
+    </div>
+  </div>
+{% endmacro %}

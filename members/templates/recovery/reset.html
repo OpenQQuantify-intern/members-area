@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'auth/_fields.html' import field_row %}
+{% block title %}Choose a new password · MembersArea{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/recovery.js') }}" defer></script>{% endblock %}
+{% block content %}
+<section class="auth-layout" aria-labelledby="reset-title">
+  <div class="auth-intro">
+    <p class="eyebrow">A little peace of mind</p>
+    <h1 id="reset-title">Make it<br>memorable.</h1>
+    <p class="intro">Choose a new password you haven’t used before. Your other sessions will be signed out when you finish.</p>
+  </div>
+  <div class="form-card" data-recovery-reset data-ready="{{ 'true' if ready else 'false' }}" data-check-url="{{ url_for('recovery.check_link') }}">
+    <h2>Choose a new password</h2>
+    <p id="reset-link-status" class="muted" role="status" {% if ready %}hidden{% endif %}>Checking your reset link…</p>
+    <p id="reset-link-error" class="message message-error" role="alert" hidden></p>
+    <form id="reset-password-form" method="post" action="{{ url_for('recovery.reset_password') }}" {% if not ready %}hidden{% endif %}>
+      {{ form.hidden_tag() }}
+      {{ field_row(form.new_password, 'new-password', 'Use 15–128 characters. Try a memorable passphrase.') }}
+      {{ field_row(form.confirm_password, 'new-password') }}
+      {{ form.submit(class_='button button-full') }}
+    </form>
+    <p id="reset-new-link" class="form-help-link" {% if ready %}hidden{% endif %}><a class="text-link" href="{{ url_for('recovery.forgot_password') }}">Request a new link</a></p>
+    <noscript><p class="message">Please enable JavaScript to open your secure reset link, then reopen the link from your email.</p></noscript>
+  </div>
+</section>
+{% endblock %}

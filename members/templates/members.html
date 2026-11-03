@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Your members area · MembersArea{% endblock %}
+{% block content %}
+<section class="dashboard" aria-labelledby="members-title">
+  <p class="eyebrow">Your members area</p>
+  <h1 id="members-title">You’re right<br>where you belong.</h1>
+  <p class="intro">Welcome back. This space is available to signed-in members.</p>
+  <div class="account-card">
+    <div class="account-card-heading"><h2>Your account</h2><span class="badge">Active member</span></div>
+    <dl>
+      <div><dt>Email address</dt><dd>{{ g.user['email'] }}</dd></div>
+      <div><dt>Member since</dt><dd>{{ g.user['created_at'][:10] }}</dd></div>
+    </dl>
+    <a class="text-link" href="{{ url_for('accounts.index') }}">Manage your account <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Check your inbox · MembersArea{% endblock %}
+{% block content %}
+<section class="welcome" aria-labelledby="sent-title">
+  <p class="eyebrow">Your next step</p>
+  <h1 id="sent-title">Check your<br>inbox.</h1>
+  <p class="intro">If an active account matches that email address, you’ll receive a password-reset link. Check your spam folder too.</p>
+  <p class="muted">The link lasts 15 minutes. If you requested more than one, use the newest email.</p>
+  <div class="actions">
+    <a class="button" href="{{ url_for('auth.login') }}">Back to log in</a>
+    <a class="text-link" href="{{ url_for('recovery.forgot_password') }}">Request another link</a>
+  </div>
+</section>
+{% endblock %}

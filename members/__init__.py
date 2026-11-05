@@ -84,6 +84,7 @@ def create_app(test_config=None):
 
     @app.errorhandler(CSRFError)
     def csrf_error(error):
+        app.logger.warning("CSRF validation failed: %s", error.description)
         return render_template(
             "error.html", title="Please refresh the page",
             message="Your form has expired or could not be verified. Refresh the page and try again.",
